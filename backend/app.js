@@ -12,7 +12,7 @@ const PORT = process.env.PORT;
 app.use(express.json());
 app.use(
   cors({
-    origin: 'https://finance-management-k9ar.onrender.com/', // Allow requests from this origin
+    origin: 'https://finance-management-k9ar.onrender.com', // Allow requests from this origin
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific HTTP methods
     credentials: true, // Allow cookies or authorization headers
   })
@@ -28,7 +28,7 @@ const loadRoutes = async () => {
   const files = fs.readdirSync(routesPath); // Read files in the routes folder
   for (const file of files) {
     const route = await import(path.join(routesPath, file)); // Import each route
-    app.use('https://finance-management-k9ar.onrender.com/', route.default); // Use route.default if the module exports a function
+    app.use('/api/v1', route.default); // Use route.default if the module exports a function
   }
 };
 
@@ -37,9 +37,9 @@ await loadRoutes(); // Call the async function to load routes
 
 // Add the user authentication route
 const authRoute = await import('./routes/auth.js');
-app.use('https://finance-management-k9ar.onrender.com/auth', authRoute.default); // Add the authentication 
+app.use('/ap1/v1/auth', authRoute.default); // Add the authentication 
 const transactionRoute = await import('./routes/transactions.js')
-app.use('https://finance-management-k9ar.onrender.com/transactions', transactionRoute.default); // Add the transaction route
+app.use('/ap1/v1/transactions', transactionRoute.default); // Add the transaction route
 
 app.use(express.static(path.join(_dirname, "frontend", "build")));
 
